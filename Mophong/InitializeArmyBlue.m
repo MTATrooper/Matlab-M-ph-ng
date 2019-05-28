@@ -2,7 +2,7 @@ function [b_Image,b_Alpha, BluePlot]=InitializeArmyBlue()
 global ArmyBlue;
 global ImageWidth;
 
-[b_Image, ~, b_Alpha]	= imread('bird_b.png');
+[b_Image, ~, b_Alpha]	= imread('blue.png');
 b_Image = imresize(b_Image, [ImageWidth ImageWidth], 'lanczos3' );
 b_Alpha = imresize(b_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
 

@@ -4,7 +4,7 @@ global ArmyRed;
 global ImageWidth;
 
 
-[r_Image, ~, r_Alpha]	= imread('bird_r.png');
+[r_Image, ~, r_Alpha]	= imread('red.png');
 r_Image = imresize(r_Image, [ImageWidth ImageWidth], 'lanczos3' );
 r_Alpha = imresize(r_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
 

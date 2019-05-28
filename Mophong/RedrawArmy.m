@@ -3,6 +3,7 @@ global EnvironmentWidth;
 global ImageWidth;
 global TimeSteps;
 global blueImg redImg;
+global Cuuduoc;
 
 for BoidIndex = 1 : BlueNum
     if(blueImg(1,BoidIndex)>0)
@@ -10,7 +11,7 @@ for BoidIndex = 1 : BlueNum
         b_Image = imresize(b_Image, [ImageWidth ImageWidth], 'lanczos3' );
         b_Alpha = imresize(b_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
     else
-        [b_Image, ~, b_Alpha]	= imread('bird_b.png');
+        [b_Image, ~, b_Alpha]	= imread('blue.png');
         b_Image = imresize(b_Image, [ImageWidth ImageWidth], 'lanczos3' );
         b_Alpha = imresize(b_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
     end
@@ -40,7 +41,7 @@ for BoidIndex = 1 : RedNum
         r_Image = imresize(r_Image, [ImageWidth ImageWidth], 'lanczos3' );
         r_Alpha = imresize(r_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
     else
-        [r_Image, ~, r_Alpha]	= imread('bird_r.png');
+        [r_Image, ~, r_Alpha]	= imread('red.png');
         r_Image = imresize(r_Image, [ImageWidth ImageWidth], 'lanczos3' );
         r_Alpha = imresize(r_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
     end
@@ -65,7 +66,11 @@ for BoidIndex = 1 : RedNum
     end
 end
 %Ve con tin
-    if(redImg(1,8)>0)
+    if(Cuuduoc == 0)
+        [r_Image, ~, r_Alpha]	= imread('contin1.png');
+        r_Image = imresize(r_Image, [ImageWidth ImageWidth], 'lanczos3' );
+        r_Alpha = imresize(r_Alpha, [ImageWidth ImageWidth], 'lanczos3' );
+    elseif(redImg(1,8)>0)
         [r_Image, ~, r_Alpha]	= imread('Empty.png');
         r_Image = imresize(r_Image, [ImageWidth ImageWidth], 'lanczos3' );
         r_Alpha = imresize(r_Alpha, [ImageWidth ImageWidth], 'lanczos3' );

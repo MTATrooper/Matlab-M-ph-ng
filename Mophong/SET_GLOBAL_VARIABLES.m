@@ -2,7 +2,7 @@ function SET_GLOBAL_VARIABLES()
 global EnvironmentWidth ImageWidth SafeDistance AlignmentRange CohesionRange...
     wanderAngle FleeDistance SpeedCorrection ...
     BoidsNum Boids TargetsNum Targets D_BehindLeader ObstaclesNum Obstacles...
-    ArmyRed ArmyBlue TargetH blueImg redImg heliImg HeliWidth;
+    ArmyRed ArmyBlue TargetH blueImg redImg heliImg HeliWidth Cuuduoc;;
 
 %% change global variables here (use user input or something)
 EnvironmentWidth = 400;
@@ -27,6 +27,7 @@ redImg = zeros(1,14);
 redImg(1,:) = 0;
 
 heliImg = 0;
+Cuuduoc = 0;
 %%Tao vi tri quan do
 ArmyRed = zeros(50,14);
 ArmyRed(1,1)= -100;
@@ -57,8 +58,8 @@ ArmyBlue(4,2) = -200;
 ArmyBlue(5,1) = -50;
 ArmyBlue(5,2) = -200;
 ArmyBlue(:,4:5) = 200; %200*(2*rand([BoidsNum,2])-1); % set random velocity
-ArmyBlue(:,10) = 2;%*(rand([BoidsNum,1]) + 0.2); % set maxspeed
-ArmyBlue(:,11) = 0.2; % set maxforce
+ArmyBlue(:,10) = 1.5;%*(rand([BoidsNum,1]) + 0.2); % set maxspeed
+ArmyBlue(:,11) = 0.09; % set maxforce
 ArmyBlue(:,13) = 200; % set max see ahead
 ArmyBlue(:,14) = 10; % set max avoid force
 %% Tao vi tri may bay

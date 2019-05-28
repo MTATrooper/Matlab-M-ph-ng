@@ -186,7 +186,7 @@ while(timeTick < TimeSteps)
         break;
     end
 end
-Cuuduoc = 1;
+
                     %%%GD 3: Quay tro ve truc thang
 timeTick = 1;
 while(timeTick < TimeSteps)

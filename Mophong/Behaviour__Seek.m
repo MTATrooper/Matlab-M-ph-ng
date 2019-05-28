@@ -5,7 +5,7 @@ global BoidsNum;
 global Boids;
 global ArmyBlue;
 %% first draw
-[v_Image,v_Alpha,BoidsPlot,fHandler] = InitializeGraphics();
+[v_Image,v_Alpha, d_Image,d_Alpha,BoidsPlot, DoorPlot,fHandler]=InitializeGraphics();
 [b_Image,b_Alpha,r_Image,r_Alpha, BluePlot, RedPlot]=InitializeArmyBlue_Victim();
 
 %% target is optional, if target is undefined,
@@ -25,13 +25,13 @@ SaveTarget = plot(Target(1), Target(2), '.','MarkerSize',1, 'MarkerFaceColor','w
 timeTick = 1;
 
 while (timeTick < TimeSteps)
-    for i = 1:5
-        CurrentBoid = ArmyBlue(i, :);
-        force = steer_seek(CurrentBoid, Target1(i,:));
-        ArmyBlue(i,:) = applyForce(CurrentBoid, force);
-        % redraw
-    end
-    RedrawGraphics(ArmyBlue,5,b_Image,b_Alpha,BluePlot);
+%     for i = 1:5
+%         CurrentBoid = ArmyBlue(i, :);
+%         force = steer_seek(CurrentBoid, Target1(i,:));
+%         ArmyBlue(i,:) = applyForce(CurrentBoid, force);
+%         % redraw
+%     end
+%     RedrawGraphics(ArmyBlue,5,b_Image,b_Alpha,BluePlot);
     Boids = updateAtBoundary(Boids,1);
     if(Boids(1,1)>0)
         for i=1:5
