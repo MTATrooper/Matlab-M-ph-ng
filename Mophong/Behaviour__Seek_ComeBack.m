@@ -43,9 +43,19 @@ while (timeTick < TimeSteps)
     % redraw
     RedrawGraphics(Boids,BoidsNum,v_Image,v_Alpha,BoidsPlot);
     timeTick = timeTick+1;
-    if(dist(Boids(1,:),Target(:)) < 40)
-        delete(heliImg);
+%     if(dist(Boids(1,:),Target(:)) < 40)
+%         delete(heliImg);
+%         break;
+%     end
+    if(timeTick == 200)
+        [h_Image, ~, ~]	= imread('index.jpg');
+        h_Image = imresize(h_Image, [600 600], 'lanczos3' );
+        angle = 180;%atan(Boids(1,2) / Boids(1,1)) * 180 / pi - 90;	% imrotate rotates ccw     
+        img_i = imrotate(h_Image, angle);
+        house_img(1) = image(-300, -350 ,img_i);
+        house = house_img(1);
         break;
     end
 end
+        
 end

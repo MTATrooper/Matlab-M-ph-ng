@@ -5,8 +5,8 @@ global ArmyBlue;
 global TargetH;
 global blueImg redImg;
 global ArtHouse;
-global BoidsNum Boids;
-global Cuuduoc;
+global BlueMau RedMau;
+global Cuuduoc dan;
                         
                         %%%%%%%%%%%%%%%%%%%%%%%
                         %% Khoi tao cac doi tuong va vi tri
@@ -23,6 +23,7 @@ TargetC(6,1) = 100; TargetC(6,2) = -250;
 TargetC(7,1) = 0; TargetC(7,2)= -200;
                             %%% GD 1: Giet 2 quan xanh gac cua
 timeTick = 1;
+danIndex = 0;
 while(timeTick < TimeSteps)
     %Cho 2 quan xanh gac tien den quan do
     for BoidIndex = 1:2
@@ -66,33 +67,12 @@ while(timeTick < TimeSteps)
         end        
     end
     %Cho quan do tien den con tin tren duong di gap quan xanh thi danh
-    for BoidIndex = 1:7
-        ArmyRed = updateAtBoundary(ArmyRed,BoidIndex);
-        % steering
-        CurrentBoid = ArmyRed(BoidIndex, :);
-        if(RedMark(1,BoidIndex)>0)
-            sepr_force=steer_separation(CurrentBoid);
-            seek_force = steer_seek(CurrentBoid, ArmyBlue(RedMark(1,BoidIndex),:));
-            force=seek_force*0.2+sepr_force*10;
-        else
-            align_force=steer_alignment(CurrentBoid);
-            sepr_force=steer_separation(CurrentBoid); 
-            arr_force = steer_arrival(CurrentBoid, TargetC(BoidIndex,:));
-            force=arr_force*0.2+align_force*0.05+sepr_force*50;
+    if(danIndex > 0)
+        for j = 1:danIndex
+            delete(dan(j));
         end
-        ArmyRed(BoidIndex,:) = applyForce(CurrentBoid, force);               
+        danIndex=0;
     end
-    %Neu khoang cach la 20 thi quan xanh chet
-    for BlueIndex = 1: 2
-        for RedIndex = 1: 7
-            if(dist(ArmyBlue(BlueIndex,:),ArmyRed(RedIndex,:))<20)
-                blueImg(1,BlueIndex) = 1;
-                RedMark(1,RedIndex)=0;
-            end
-        end
-    end
-    RedrawArmy(ArmyRed,7,r_Image,r_Alpha,RedPlot,ArmyBlue,2,b_Image,b_Alpha,BluePlot);
-    timeTick = timeTick+1;
     dem=0;
     for i = 1: 5
         if(blueImg(1,i)==1)
@@ -102,11 +82,62 @@ while(timeTick < TimeSteps)
     if(dem == 2)
         break;
     end
+    for BoidIndex = 1:7
+        ArmyRed = updateAtBoundary(ArmyRed,BoidIndex);
+        % steering
+        
+        CurrentBoid = ArmyRed(BoidIndex, :);
+        if(RedMark(1,BoidIndex)>0)
+            if(dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)< 300 && dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)> 290 || dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)< 150 && dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)> 140 || dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid) < 80)
+                x1 = CurrentBoid(1);
+                x2 = ArmyBlue(RedMark(1,BoidIndex),1);
+                y1 = CurrentBoid(2);
+                y2 = ArmyBlue(RedMark(1,BoidIndex),2);
+                danIndex= danIndex+1;
+                dan(danIndex) = plot([x1 x2], [y1 y2], 'r-');
+                BlueMau(1,RedMark(1,BoidIndex))=BlueMau(1,RedMark(1,BoidIndex))-10;
+                if(BlueMau(1,RedMark(1,BoidIndex))<=0)
+                    RedMark(1,BoidIndex)=0;
+                end
+            elseif(dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)< 170 && dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)> 160)
+                x1 = CurrentBoid(1);
+                x2 = ArmyBlue(RedMark(1,BoidIndex),1);
+                y1 = CurrentBoid(2);
+                y2 = ArmyBlue(RedMark(1,BoidIndex),2);
+                danIndex= danIndex+1;
+                dan(danIndex) = plot([x1 x2], [y1 y2], 'b-');
+                RedMau(1,RedMark(1,BoidIndex))=RedMau(1,RedMark(1,BoidIndex))-20;
+            else
+                sepr_force=steer_separation(CurrentBoid);
+                seek_force = steer_seek(CurrentBoid, ArmyBlue(RedMark(1,BoidIndex),:));
+                force=seek_force*0.2+sepr_force*10;
+            end
+        else
+            align_force=steer_alignment(CurrentBoid);
+            sepr_force=steer_separation(CurrentBoid); 
+            arr_force = steer_arrival(CurrentBoid, TargetC(BoidIndex,:));
+            force=arr_force*0.2+align_force*0.05+sepr_force*50;
+        end
+        ArmyRed(BoidIndex,:) = applyForce(CurrentBoid, force);               
+    end
+    %Neu het mau thi chet
+    for BlueIndex = 1: 2
+        if(BlueMau(1,BlueIndex)<=0)
+            blueImg(1,BlueIndex) = 1;
+        end
+    end
+    for RedIndex = 1: 2
+        if(RedMau(1,RedIndex)<=0)
+            redImg(1,RedIndex) = 1;
+        end
+    end
+    RedrawArmy(ArmyRed,7,r_Image,r_Alpha,RedPlot,ArmyBlue,2,b_Image,b_Alpha,BluePlot);
+    timeTick = timeTick+1;
+    
 end
                         %%%GD 2: GIET QUAN XANH TRONG NHA
 
-%Xoa nha
-delete(ArtHouse);
+danIndex = 0;
 timeTick = 1;
 while(timeTick < TimeSteps)
     %Cho 3 quan xanh tien den quan do
@@ -122,7 +153,7 @@ while(timeTick < TimeSteps)
     BlueZ=0;
     BlueMark=zeros(1,5);
     for i=3:5
-        if (dist(ArmyBlue(i,:),TargetH)<=350 && blueImg(1,i) == 0)
+        if (dist(ArmyBlue(i,:),TargetH)<=400 && blueImg(1,i) == 0)
             BlueMark(1,i)=1;
             BlueZ=BlueZ+1;
         end
@@ -151,31 +182,12 @@ while(timeTick < TimeSteps)
         end        
     end
     %Cho quan do tien den con tin tren duong di gap quan xanh thi danh
-    for BoidIndex = 1:7
-        ArmyRed = updateAtBoundary(ArmyRed,BoidIndex);
-        % steering
-        CurrentBoid = ArmyRed(BoidIndex, :);
-        if(RedMark(1,BoidIndex)>0)
-            force = steer_seek(CurrentBoid, ArmyBlue(RedMark(1,BoidIndex),:));
-        else
-            align_force=steer_alignment(CurrentBoid);
-            sepr_force=steer_separation(CurrentBoid); 
-            arr_force = steer_arrival(CurrentBoid, TargetC(BoidIndex,:));
-            force=arr_force*0.2+align_force*0.05+sepr_force*50;
+    if(danIndex > 0)
+        for j = 1:danIndex
+            delete(dan(j));
         end
-        ArmyRed(BoidIndex,:) = applyForce(CurrentBoid, force);               
+        danIndex=0;
     end
-    %Neu khoang cach la 20 thi quan xanh chet
-    for BlueIndex = 3: 5
-        for RedIndex = 1: 7
-            if(dist(ArmyBlue(BlueIndex,:),ArmyRed(RedIndex,:))<20)
-                blueImg(1,BlueIndex) = 1;
-                RedMark(1,RedIndex)=0;
-            end
-        end
-    end
-    RedrawArmy(ArmyRed,7,r_Image,r_Alpha,RedPlot,ArmyBlue,5,b_Image,b_Alpha,BluePlot);
-    timeTick = timeTick+1;
     dem =0;
     for i=1:7
         if(dist(ArmyRed(i,:),TargetC(i,:))<20)
@@ -185,6 +197,55 @@ while(timeTick < TimeSteps)
     if(dem == 7)
         break;
     end
+    for BoidIndex = 1:7
+        ArmyRed = updateAtBoundary(ArmyRed,BoidIndex);
+        % steering
+        CurrentBoid = ArmyRed(BoidIndex, :);
+        if(RedMark(1,BoidIndex)>0)
+            if(dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)< 170 && dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)> 160 || dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)< 140 && dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)> 130 || dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid) < 80)
+                x1 = CurrentBoid(1);
+                x2 = ArmyBlue(RedMark(1,BoidIndex),1);
+                y1 = CurrentBoid(2);
+                y2 = ArmyBlue(RedMark(1,BoidIndex),2);
+                danIndex= danIndex+1;
+                dan(danIndex) = plot([x1 x2], [y1 y2], 'r-');
+                BlueMau(1,RedMark(1,BoidIndex))=BlueMau(1,RedMark(1,BoidIndex))-10;
+                if(BlueMau(1,RedMark(1,BoidIndex))<=0)
+                    RedMark(1,BoidIndex)=0;
+                end
+            elseif(dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)< 120 && dist(ArmyBlue(RedMark(1,BoidIndex),:),CurrentBoid)> 110)
+                x1 = CurrentBoid(1);
+                x2 = ArmyBlue(RedMark(1,BoidIndex),1);
+                y1 = CurrentBoid(2);
+                y2 = ArmyBlue(RedMark(1,BoidIndex),2);
+                danIndex= danIndex+1;
+                dan(danIndex) = plot([x1 x2], [y1 y2], 'b-');
+                RedMau(1,RedMark(1,BoidIndex))=RedMau(1,RedMark(1,BoidIndex))-20;
+            else
+                force = steer_seek(CurrentBoid, ArmyBlue(RedMark(1,BoidIndex),:));
+            end
+        else
+            align_force=steer_alignment(CurrentBoid);
+            sepr_force=steer_separation(CurrentBoid); 
+            arr_force = steer_arrival(CurrentBoid, TargetC(BoidIndex,:));
+            force=arr_force*0.2+align_force*0.05+sepr_force*50;
+        end
+        ArmyRed(BoidIndex,:) = applyForce(CurrentBoid, force);               
+    end
+    %Neu het mau thi  chet
+    for BlueIndex = 3: 5
+        if(BlueMau(1,BlueIndex)<=0)
+            blueImg(1,BlueIndex) = 1;
+        end
+    end
+    for RedIndex = 1: 2
+        if(RedMau(1,RedIndex)<=0)
+            redImg(1,RedIndex) = 1;
+        end
+    end
+    RedrawArmy(ArmyRed,7,r_Image,r_Alpha,RedPlot,ArmyBlue,5,b_Image,b_Alpha,BluePlot);
+    timeTick = timeTick+1;
+    
 end
 Cuuduoc = 1;
                     %%%GD 3: Quay tro ve truc thang

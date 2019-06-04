@@ -2,7 +2,7 @@ function SET_GLOBAL_VARIABLES()
 global EnvironmentWidth ImageWidth SafeDistance AlignmentRange CohesionRange...
     wanderAngle FleeDistance SpeedCorrection ...
     BoidsNum Boids TargetsNum Targets D_BehindLeader ObstaclesNum Obstacles...
-    ArmyRed ArmyBlue TargetH blueImg redImg heliImg HeliWidth Cuuduoc;;
+    ArmyRed ArmyBlue TargetH blueImg redImg heliImg HeliWidth Cuuduoc BlueMau RedMau;
 
 %% change global variables here (use user input or something)
 EnvironmentWidth = 400;
@@ -28,6 +28,10 @@ redImg(1,:) = 0;
 
 heliImg = 0;
 Cuuduoc = 0;
+BlueMau = zeros(1,5);
+BlueMau(1,:)=150;
+RedMau = zeros(1,5);
+RedMau(1,:)=150;
 %%Tao vi tri quan do
 ArmyRed = zeros(50,14);
 ArmyRed(1,1)= -100;

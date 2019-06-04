@@ -5,7 +5,7 @@ global BoidsNum;
 global Boids;
 global ArmyBlue;
 %% first draw
-[v_Image,v_Alpha, d_Image,d_Alpha,BoidsPlot, DoorPlot,fHandler]=InitializeGraphics();
+[v_Image,v_Alpha, d_Image,d_Alpha,BoidsPlot, DoorPlot, fHandler]=InitializeGraphics();
 [b_Image,b_Alpha,r_Image,r_Alpha, BluePlot, RedPlot]=InitializeArmyBlue_Victim();
 
 %% target is optional, if target is undefined,
